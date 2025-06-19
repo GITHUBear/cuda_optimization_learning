@@ -1,0 +1,1 @@
+sudo /usr/local/cuda/bin/ncu --set roofline -o ./sgemm_profile_roofline3 -f ./sgemm

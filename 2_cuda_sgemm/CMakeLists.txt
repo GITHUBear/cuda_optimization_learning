@@ -14,6 +14,9 @@ foreach(CU_FILE IN LISTS SRC_FILES)
         CUDA::cudart
         CUDA::cublas
     )
+    target_compile_options(${FILE_NAME} PRIVATE
+        $<$<COMPILE_LANGUAGE:CUDA>:-arch=sm_89>
+    )
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         message(STATUS " build ${CU_FILE} in DEBUG MODE")
         target_compile_options(${FILE_NAME} PRIVATE
