@@ -7,7 +7,7 @@
 void rand_matrix(int m, int n, float* M) {
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < n; ++j) {
-            M[OFFSET(n, i, j)] = 1;
+            M[OFFSET(n, i, j)] = 2.0 * (float)drand48() - 1.0;
         }
     }
 }
@@ -341,11 +341,11 @@ int main() {
     rand_matrix(M, K, A);
     rand_matrix(K, N, B);
 
-    constexpr size_t BLOCK_TILE_M = 128;
-    constexpr size_t BLOCK_TILE_N = 128;
+    constexpr size_t BLOCK_TILE_M = 64;
+    constexpr size_t BLOCK_TILE_N = 64;
     constexpr size_t BLOCK_TILE_K = 8;
-    constexpr size_t THREAD_TILE_Y = 8;
-    constexpr size_t THREAD_TILE_X = 8;
+    constexpr size_t THREAD_TILE_Y = 4;
+    constexpr size_t THREAD_TILE_X = 4;
 
     dim3 blk_v0(16, 16);
     dim3 grid_v0(M / 16, N / 16);
