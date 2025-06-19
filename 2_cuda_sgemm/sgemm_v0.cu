@@ -1,5 +1,6 @@
 #include "../utils/cuda_context.cuh"
 #include <cstdio>
+#include <iostream>
 
 #define OFFSET(col, x, y) ((col) * (x) + (y))
 
@@ -57,9 +58,9 @@ void print_matrix(int M, int N, float* A) {
 }
 
 int main() {
-    size_t M = 512;
-    size_t N = 512;
-    size_t K = 512;
+    size_t M = 2048;
+    size_t N = 2048;
+    size_t K = 2048;
 
     float* A, *B, *C, *CPU_C;
     cudaMallocManaged((void**)&A, M * K * sizeof(float));
@@ -73,7 +74,7 @@ int main() {
     // print_matrix(M, K, A);
     // print_matrix(K, N, B);
 
-    cpu_gemm(M, N, K, A, B, CPU_C);
+    // cpu_gemm(M, N, K, A, B, CPU_C);
     // print_matrix(M, N, CPU_C);
 
     constexpr size_t BLOCK_SIZE_X = 16;
@@ -82,14 +83,15 @@ int main() {
     dim3 grid((M + BLOCK_SIZE_X - 1) / BLOCK_SIZE_X, (N + BLOCK_SIZE_Y - 1) / BLOCK_SIZE_Y);
     sgemm<<<grid, blk>>>(M, N, K, A, B, C);
     cudaDeviceSynchronize();
+    std::cout << C[0] << std::endl;
     // print_matrix(M, N, C);
 
-    float max_diff = compare_matrics(M, N, CPU_C, C);
-    if (max_diff > 0.5) {
-        printf("result error!\n");
-    } else {
-        printf("check success!\n");
-    }
+    // float max_diff = compare_matrics(M, N, CPU_C, C);
+    // if (max_diff > 0.5) {
+    //     printf("result error!\n");
+    // } else {
+    //     printf("check success!\n");
+    // }
 
     free(CPU_C);
     cudaFree(A);

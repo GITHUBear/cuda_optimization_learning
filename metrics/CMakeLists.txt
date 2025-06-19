@@ -27,5 +27,5 @@ foreach(CU_FILE IN LISTS SRC_FILES)
             $<$<COMPILE_LANGUAGE:CXX>:-O3>
         )
     endif()
-    # target_compile_options(${FILE_NAME} PRIVATE -lineinfo)
+    target_compile_options(${FILE_NAME} PRIVATE -lineinfo)
 endforeach()
